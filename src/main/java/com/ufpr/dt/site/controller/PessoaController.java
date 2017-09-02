@@ -1,44 +1,65 @@
 package com.ufpr.dt.site.controller;
 
+
 import com.ufpr.dt.site.entity.Pessoa;
 import com.ufpr.dt.site.service.PessoaService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import javax.validation.Valid;
 
-@RestController
+@Controller
 @RequestMapping(value = "/pessoas")
 public class PessoaController {
-
-    private static final Logger log = LoggerFactory.getLogger(PessoaController.class);
 
     @Autowired
     private PessoaService pessoaService;
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> create(@RequestBody Pessoa pessoa) {
-        try {
-            Pessoa pessoaSalva = pessoaService.create(pessoa);
-            return new ResponseEntity<Pessoa>(pessoaSalva , HttpStatus.CREATED);
-        } catch (RuntimeException e) {
-            log.debug("Falha ao criar um novo funcionario: {}. Erro: {}", pessoa, e.getMessage());
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping
+    public ModelAndView mostrarTodos(){
+        ModelAndView modelAndView = new ModelAndView("/pessoa");
+        modelAndView.addObject("pessoas", pessoaService.mostrarTodos());
+        return modelAndView;
+    }
+
+    @GetMapping("/insere")
+    public ModelAndView insere(Pessoa pessoa) {
+
+        ModelAndView mv = new ModelAndView("/pessoaInsere");
+        mv.addObject("pessoa", pessoa);
+
+        return mv;
+    }
+
+    @GetMapping("/editar/{id}")
+    public ModelAndView editar(@PathVariable("id") Long id) {
+
+        return insere(pessoaService.mostrarUm(id));
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView delete(@PathVariable("id") Long id) {
+
+        pessoaService.delete(id);
+
+        return mostrarTodos();
+    }
+
+    @PostMapping("/salvar")
+    public ModelAndView salvar(@Valid Pessoa pessoa, BindingResult result) {
+
+        if(result.hasErrors()) {
+            return insere(pessoa);
         }
-    }
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> listAll() {
-        return new ResponseEntity<List<Pessoa>>(pessoaService.listAll(), HttpStatus.OK);
-    }
+        pessoaService.salvar(pessoa);
 
+        return mostrarTodos();
+    }
 }
