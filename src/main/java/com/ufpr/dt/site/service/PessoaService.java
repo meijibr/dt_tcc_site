@@ -16,7 +16,12 @@ public class PessoaService {
     private PessoaRepository pessoaRepository;
 
     public Pessoa salvar(Pessoa pessoa) {
-        return pessoaRepository.save(pessoa);
+        pessoaRepository.save(pessoa);
+        return pessoa;
+    }
+
+    public Pessoa findByEmail(String email) {
+        return pessoaRepository.findByEmail(email);
     }
 
     public List<Pessoa> mostrarTodos() {

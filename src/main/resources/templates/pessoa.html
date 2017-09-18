@@ -20,13 +20,18 @@
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th></th>
+                    <th>Sobrenome</th>
+                    <th>Senha</th>
+                    <th>email</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="pessoa : ${pessoas}">
                     <td th:text="${pessoa.id}"></td>
                     <td th:text="${pessoa.nome}"></td>
+                    <td th:text="${pessoa.sobrenome}"></td>
+                    <td th:text="${pessoa.senha}"></td>
+                    <td th:text="${pessoa.email}"></td>
                     <td>
                         <div class="btn-group pull-right">
                             <a class="btn btn-sm btn-primary" th:href="@{/pessoas/editar/{id}(id=${pessoa.id})}" >Editar</a>
