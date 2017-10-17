@@ -5,6 +5,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
@@ -20,5 +21,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         templateEngine.setTemplateResolver(templateResolver);
         templateEngine.addDialect(new SpringSecurityDialect());
         return templateEngine;
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        if (!registry.hasMappingForPattern("/vendor/**")) {
+            registry.addResourceHandler("/vendor/**").addResourceLocations("classpath:/vendor/");
+        }
     }
 }
