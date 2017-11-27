@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Cadastro de Lista</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Cadastro de Lista</strong>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal" th:object="${lista}" th:action="@{/listas/salvar}" method="POST" style="margin: 10px">
+            <div class="form-group">
+                <fieldset>
+                    <div class="form-group row">
+                        <div class="alert alert-danger" th:if="${#fields.hasAnyErrors()}">
+                            <div th:each="detailedError : ${#fields.detailedErrors()}">
+                                <span th:text="${detailedError.message}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-1">
+                            <input type="text" class="form-control input-sm" id="id" th:field="*{id}" readOnly="readonly"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-4" th:classappend="${#fields.hasErrors('nome')}? 'has-error'">
+                            <label>Nome</label>
+                            <input type="text" class="form-control input-sm" th:field="*{nome}" autofocus="autofocus" placeholder="Informe o nome da lista" maxlength="50"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4" th:classappend="${#fields.hasErrors('idioma')}? 'has-error'">
+                            <label>Sobrenome</label>
+                            <input type="text" class="form-control input-sm" th:field="*{idioma}" autofocus="autofocus" placeholder="Idioma" maxlength="50"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4" th:classappend="${#fields.hasErrors('turma')}? 'has-error'">
+                            <label>E-mail</label>
+                            <input type="text" class="form-control input-sm" th:field="*{turma}" autofocus="autofocus" placeholder="Informe a turma" maxlength="200"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4" th:classappend="${#fields.hasErrors('pessoa.id')}? 'has-error'">
+                            <label>Senha</label>
+                            <input type="password" class="form-control input-sm" th:field="*{pessoa.id}" autofocus="autofocus" placeholder="Informe o senha" maxlength="32"/>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset th:object="${lista}">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover table-bordered">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <!--<th>Idioma</th>-->
+                                <!--<th>Palavra</th>-->
+                                <th>Frase</th>
+                                <th>Tradução</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="palavraFrase : ${palavrasFrases}">
+                                <td th:text="${palavraFrase.id}"></td>
+                                <!--<td th:text="${palavraFrase.palavra.idioma}"></td>-->
+                                <!--<td th:text="${palavraFrase.palavra.palavra}"></td>-->
+                                <td th:text="${palavraFrase.frase}"></td>
+                                <td th:text="${palavraFrase.traducao}"></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <a class="btn btn-sm btn-primary" th:href="@{/pessoas/editar/{id}(id=${pessoa.id})}" >Editar</a>
+                                        <a class="delete btn btn-sm btn-danger" th:href="@{/pessoas/delete/{id}(id=${pessoa.id})}">Excluir</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="form-group row">
+                <button type="submit" class="btn btn-sm btn-primary">Salvar</button>
+                <a th:href="@{/listas}" class="btn btn-sm btn-default">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

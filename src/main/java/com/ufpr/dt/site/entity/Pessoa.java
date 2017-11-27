@@ -1,20 +1,38 @@
 package com.ufpr.dt.site.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity(name = "Pessoa")
-public class Pessoa {
-
-    private Long id;
-    private String nome;
-    private String sobrenome;
-    private String senha;
-    private String email;
+public class Pessoa implements Serializable{
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(nullable = false, length = 60, name = "nome")
+    @NotBlank(message = "Nome é uma informação obrigatória.")
+    private String nome;
+    @Column(nullable = false, length = 60, name = "sobrenome")
+    @NotBlank(message = "Sobrenome é uma informação obrigatória.")
+    private String sobrenome;
+    @Column(name = "senha", nullable = false, length = 60)
+    @NotBlank(message = "Senha é uma informação obrigatória.")
+    private String senha;
+    @Column(name = "email", nullable = false, length = 60)
+    @NotBlank(message = "E-mail é uma informação obrigatória.")
+    private String email;
+
+    //bi-directional many-to-one association to Lista
+    @OneToMany(mappedBy="pessoa")
+    @JsonManagedReference
+    private List<Lista> listas;
+
+
     public Long getId() {
         return id;
     }
@@ -23,8 +41,7 @@ public class Pessoa {
         this.id = id;
     }
 
-    @Column(nullable = false, length = 60, name = "nome")
-    @NotBlank(message = "Nome é uma informação obrigatória.")
+
     public String getNome() {
         return nome;
     }
@@ -33,8 +50,7 @@ public class Pessoa {
         this.nome = nome;
     }
 
-    @Column(nullable = false, length = 60, name = "sobrenome")
-    @NotBlank(message = "Sobrenome é uma informação obrigatória.")
+
     public String getSobrenome() {
         return sobrenome;
     }
@@ -43,8 +59,7 @@ public class Pessoa {
         this.sobrenome = sobrenome;
     }
 
-    @Column(name = "senha", nullable = false, length = 60)
-    @NotBlank(message = "Senha é uma informação obrigatória.")
+
     public String getSenha() {
         return senha;
     }
@@ -53,8 +68,6 @@ public class Pessoa {
         this.senha = senha;
     }
 
-    @Column(name = "email", nullable = false, length = 60)
-    @NotBlank(message = "E-mail é uma informação obrigatória.")
     public String getEmail() {
         return email;
     }
@@ -64,6 +77,12 @@ public class Pessoa {
     }
 
 
+    public List<Lista> getListas() {
+        return listas;
+    }
 
+    public void setListas(List<Lista> listas) {
+        this.listas = listas;
+    }
 }
 
