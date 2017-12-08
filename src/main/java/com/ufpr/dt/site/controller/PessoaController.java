@@ -43,9 +43,7 @@ public class PessoaController {
 
     @GetMapping("/delete/{id}")
     public ModelAndView delete(@PathVariable("id") Long id) {
-
         pessoaService.delete(id);
-
         return mostrarTodos();
     }
 

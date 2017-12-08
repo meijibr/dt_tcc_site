@@ -30,6 +30,7 @@ dependencies {
 	compile("org.thymeleaf.extras:thymeleaf-extras-springsecurity4")
 	compile("org.thymeleaf:thymeleaf-spring4")
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile("org.springframework.boot:spring-boot-devtools")
 
 //	runtime "org.hsqldb:hsqldb:2.3.3"
 	runtime('mysql:mysql-connector-java')

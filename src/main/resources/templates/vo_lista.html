@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+
+	<meta charset="utf-8"></meta>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+	<meta name="description" content=""></meta>
+	<meta name="author" content=""></meta>
+
+	<title>Vocabulário Online</title>
+
+	<!-- Bootstrap Core CSS -->
+	<link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet"></link>
+
+	<!-- MetisMenu CSS -->
+	<link th:href="@{/vendor/metisMenu/metisMenu.min.css}" rel="stylesheet"></link>
+
+	<!-- Custom CSS -->
+	<link th:href="@{/dist/css/sb-admin-2.css}" rel="stylesheet"></link>
+
+	<!-- Morris Charts CSS -->
+	<link th:href="@{/vendor/morrisjs/morris.css}" rel="stylesheet"></link>
+
+	<!-- Custom Fonts -->
+	<link th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css"></link>
+
+	<!-- DataTables -->
+	<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"></link>
+
+
+
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+</head>
+
+<body>
+<div th:replace="fragments/header :: header"/>
+<div  class="container">
+	<!-- /.row -->
+
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Minhas Listas
+				</div>
+				<!-- /.panel-heading -->
+				<div class="panel-body">
+					<table width="100%" class="table table-striped table-bordered table-hover" id="minhasListas">
+						<thead>
+						<tr>
+							<th class="center">Nome</th>
+							<th class="center">Idioma</th>
+							<th class="center">Turma</th>
+							<th class="center" colspan="3">Ações</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="lista : ${listas}">
+							<td th:text="${lista.nome}"></td>
+							<td th:text="${lista.idioma}"></td>
+							<td th:text="${lista.turma}"></td>
+							<td class="center"><a class="btn btn-sm btn-info btn-block" th:href="@{/atividade/{id}/revisao/(id=${lista.id})}">Revisão</a></td>
+							<td class="center"><a class="btn btn-sm btn-warning btn-block" th:href="@{/atividade/{id}/traducao/(id=${lista.id})}">Tradução</a></td>
+							<td class="center">
+								<a class="btn btn-sm btn-primary" th:href="@{/listas/editar/{id}(id=${lista.id})}" ><span class="glyphicon glyphicon-pencil"></span></a>
+								<a class="btn btn-sm btn-primary" th:href="@{/listas/delete/{id}(id=${lista.id})}" ><span class="glyphicon glyphicon-remove"></span></a>
+								</td>
+						</tr>
+
+						</tbody>
+
+						<tfoot>
+						<form th:object="${novaLista}" th:action="@{/listas/salvar}" method="POST">
+							<tr>
+								<td><input th:required="required" type="text" id="nomeLista" name="nomeLista" class="form-control input-sm" th:field="*{nome}" autofocus="autofocus" placeholder="Informe o nome da lista" maxlength="50"/></td>
+								<td><input th:required="required" type="text" class="form-control input-sm" th:field="*{idioma}" autofocus="autofocus" placeholder="Informe o idioma" maxlength="50"/></td>
+								<td><input th:required="required" type="text" class="form-control input-sm" th:field="*{turma}" autofocus="autofocus" placeholder="Informe a turma" maxlength="50"/>
+								<input type="hidden" class="form-control input-sm" name="user" id="user" th:value="${#authentication.name}" /></td>
+								<td class="center" colspan="3"><button type="submit" class="btn btn-success btn-block">Adicionar nova lista</button></td>
+							</tr>
+						</form>
+						</tfoot>
+
+					</table>
+					<!-- /.table-responsive -->
+				</div>
+				<!-- /.panel-body -->
+			</div>
+			<!-- /.panel -->
+		</div>
+		<!-- /.col-lg-12 -->
+	</div>
+</div>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<script th:src="@{/vendor/metisMenu/metisMenu.min.js}"></script>
+
+<!-- Morris Charts JavaScript -->
+<script th:src="@{/vendor/raphael/raphael.min.js}"></script>
+<script th:src="@{/vendor/morrisjs/morris.min.js}"></script>
+<script th:src="@{/data/morris-data.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script th:src="@{/dist/js/sb-admin-2.js}"></script>
+
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<!-- <script src="vendor/datatables-plugins/dataTables.bootstrap.min.js"></script> -->
+<!-- <script src="vendor/datatables-responsive/dataTables.responsive.js"></script> -->
+
+
+<script>
+    $(document).ready(function() {
+        $('#minhasListas').DataTable({
+        "language": {
+            "lengthMenu": "_MENU_ resultados por página",
+            "zeroRecords": "Nenhum registro encontrado",
+            "info": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 até 0 de 0 registros",
+   "search": "Pesquisar",
+   "InfoPostFix": "",
+   "EmptyTable": "Nenhum registro encontrado",
+   "InfoThousands": ".",
+   "LoadingRecords": "Carregando...",
+   "Processing": "Processando...",
+            "infoFiltered": "(Filtrados de _MAX_ registros)",
+   "paginate": {
+    "next": "Próximo",
+    "previous": "Anterior",
+    "first": "Primeiro",
+    "last": "Último"
+   }
+  }
+  ,"pageLength": 5,
+  "lengthMenu": [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]]
+  });
+
+    });
+ </script>
+
+<style>
+	
+		.center{
+			text-align: center;
+		}
+		
+		th{
+			margin: 0px;
+		}
+	
+		input{
+			width: 100%;
+		}
+		
+		body { background: rgba(196, 234, 194, 1) !important; }
+	
+		.dataTable > thead > tr > th[class*="sort"]:after{
+			content: "" !important;
+		}
+
+		table.dataTable thead > tr > th.sorting_asc, 
+		table.dataTable thead > tr > th.sorting_desc, 
+		table.dataTable thead > tr > th.sorting, 
+		table.dataTable thead > tr > td.sorting_asc, 
+		table.dataTable thead > tr > td.sorting_desc, 
+		table.dataTable thead > tr > td.sorting {
+			padding-right: inherit;
+		}
+	</style>
+</body>
+
+</html>

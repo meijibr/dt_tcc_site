@@ -25,8 +25,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        if (!registry.hasMappingForPattern("/vendor/**")) {
-            registry.addResourceHandler("/vendor/**").addResourceLocations("classpath:/vendor/");
-        }
+        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
     }
 }

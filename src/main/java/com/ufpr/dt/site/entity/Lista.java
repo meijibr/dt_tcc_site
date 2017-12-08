@@ -70,4 +70,12 @@ public class Lista implements Serializable {
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
+
+    public List<ListaPalavraFrase> getPalavrasFrases() {
+        return palavrasFrases;
+    }
+
+    public void setPalavrasFrases(List<ListaPalavraFrase> palavrasFrases) {
+        this.palavrasFrases = palavrasFrases;
+    }
 }

@@ -26,6 +26,8 @@ public class Atividade implements Serializable {
     private int parear;
     @Column(name = "pareou")
     private int pareou;
+    @Column(name = "rounds")
+    private int rounds;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Pessoa> pessoas;
@@ -38,6 +40,7 @@ public class Atividade implements Serializable {
         this.tipoAtividade = tipoAtividade;
         this.lista = lista;
         this.estado = "Aguardando";
+        this.rounds = 1;
         pessoas = new ArrayList<Pessoa>();
     }
 
@@ -107,5 +110,13 @@ public class Atividade implements Serializable {
 
     public void setPareou(int pareou) {
         this.pareou = pareou;
+    }
+
+    public int getRounds() {
+        return rounds;
+    }
+
+    public void setRounds(int rounds) {
+        this.rounds = rounds;
     }
 }

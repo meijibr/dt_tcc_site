@@ -6,7 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.DefaultRedirectStrategy;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
@@ -17,6 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
         @Autowired
         private UserDetailsServiceImpl userDetailsService;
 
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
         // roles admin allow to access /admin/**
         // roles user allow to access /user/**
         // custom 403 access denied handler
@@ -25,14 +35,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
 
             http.csrf().disable()
                     .authorizeRequests()
-                    .antMatchers("/", "/home", "/sobre", "/pessoas/registrar", "/pessoas", "/insere", "/vendor/**").permitAll()
-                    .antMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .antMatchers("/user/**").hasAnyRole("USER")
-//                    .anyRequest().authenticated()
+                    .antMatchers("/sobre", "/pessoas/registrar", "/pessoas", "/insere", "/vendor/**").permitAll()
+                    .anyRequest().authenticated()
                     .anyRequest().permitAll()
                     .and()
                     .formLogin()
                     .loginPage("/login")
+                    .successHandler(new AuthenticationSuccessHandler() {
+                        @Override
+                        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                                            Authentication authentication) throws IOException, ServletException {
+                            redirectStrategy.sendRedirect(request, response, "/home");
+                        }
+                    })
                     .permitAll()
                     .and()
                     .logout()
