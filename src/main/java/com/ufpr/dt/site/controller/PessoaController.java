@@ -56,6 +56,7 @@ public class PessoaController {
 
         pessoaService.salvar(pessoa);
 
-        return mostrarTodos();
+        ModelAndView modelAndView = new ModelAndView("/login");
+        return modelAndView;
     }
 }

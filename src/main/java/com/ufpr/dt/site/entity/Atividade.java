@@ -1,5 +1,7 @@
 package com.ufpr.dt.site.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +24,10 @@ public class Atividade implements Serializable {
     @ManyToOne
     @JoinColumn(name="idLista")
     private Lista lista;
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name="idPessoa")
+    private Pessoa pessoa;
     @Column(name = "parear")
     private int parear;
     @Column(name = "pareou")
@@ -36,11 +42,12 @@ public class Atividade implements Serializable {
 
     }
 
-    public Atividade(TipoAtividade tipoAtividade, Lista lista) {
+    public Atividade(TipoAtividade tipoAtividade, Lista lista, Pessoa pessoa) {
         this.tipoAtividade = tipoAtividade;
         this.lista = lista;
         this.estado = "Aguardando";
         this.rounds = 1;
+        this.pessoa = pessoa;
         pessoas = new ArrayList<Pessoa>();
     }
 
@@ -118,5 +125,13 @@ public class Atividade implements Serializable {
 
     public void setRounds(int rounds) {
         this.rounds = rounds;
+    }
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 }

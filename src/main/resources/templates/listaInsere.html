@@ -122,10 +122,10 @@
                             <tfoot>
                             <tr>
                                 <td class="hidden"></td>
-                                <td><input type="text" class="form-control input-sm" th:field="*{idioma}" autofocus="autofocus" placeholder="Idioma" maxlength="32"/></td>
-                                <td><input type="text" class="form-control input-sm" th:field="*{palavra}" autofocus="autofocus" placeholder="Palavra" maxlength="50"/></td>
-                                <td><input type="text" class="form-control input-sm" th:field="*{frase}" autofocus="autofocus" placeholder="Frase" maxlength="255"/></td>
-                                <td><input type="text" class="form-control input-sm" th:field="*{traducao}" autofocus="autofocus" placeholder="Tradução" maxlength="255"/></td>
+                                <td><input th:required="required" type="text" class="form-control input-sm" th:field="*{idioma}" autofocus="autofocus" placeholder="Idioma" maxlength="32"/></td>
+                                <td><input th:required="required" type="text" class="form-control input-sm" th:field="*{palavra}" autofocus="autofocus" placeholder="Palavra" maxlength="50"/></td>
+                                <td><input th:required="required" type="text" class="form-control input-sm" th:field="*{frase}" autofocus="autofocus" placeholder="Frase" maxlength="255"/></td>
+                                <td><input th:required="required" type="text" class="form-control input-sm" th:field="*{traducao}" autofocus="autofocus" placeholder="Tradução" maxlength="255"/></td>
                                 <td class="center"><button type="submit" class="btn btn-success btn-block">Adicionar</button></td>
                             </tr>
                             </tfoot>
